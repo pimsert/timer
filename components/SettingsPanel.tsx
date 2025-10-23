@@ -1,7 +1,6 @@
-
 import React, { useState, useEffect, useMemo } from 'react';
 import type { ExamSettings, Language } from '../types';
-import { translations } from '../constants';
+import { translations, defaultThaiInfo, defaultEnglishInfo } from '../constants';
 
 interface SettingsPanelProps {
   settings: ExamSettings;
@@ -42,6 +41,14 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ settings, onSettingsChang
 
   const handleAlertChange = (alert: keyof ExamSettings['alerts'], value: number) => {
     onSettingsChange({ ...settings, alerts: { ...settings.alerts, [alert]: value } });
+  };
+
+  const handleResetAdditionalInfo = () => {
+    handleChange('additionalInfo', '');
+  };
+  
+  const handleExampleAdditionalInfo = () => {
+    handleChange('additionalInfo', language === 'th' ? defaultThaiInfo : defaultEnglishInfo);
   };
   
   return (
@@ -89,9 +96,18 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ settings, onSettingsChang
           </SettingsInput>
         </div>
         <div className="mt-6">
-          <SettingsInput label={T.additionalInfo as string}>
-            <textarea value={settings.additionalInfo} onChange={(e) => handleChange('additionalInfo', e.target.value)} rows={3} className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder={T.additionalInfoPlaceholder as string}></textarea>
-          </SettingsInput>
+            <div className="flex justify-between items-center mb-2">
+                 <label className="block text-sm font-medium text-gray-700">{T.additionalInfo as string}</label>
+                 <div className="flex gap-2">
+                    <button onClick={handleResetAdditionalInfo} className="px-3 py-1 text-sm font-medium bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition-colors">
+                        {T.reset as string}
+                    </button>
+                    <button onClick={handleExampleAdditionalInfo} className="px-3 py-1 text-sm font-medium bg-blue-100 text-blue-800 rounded-md hover:bg-blue-200 transition-colors">
+                        {T.example as string}
+                    </button>
+                </div>
+            </div>
+            <textarea value={settings.additionalInfo} onChange={(e) => handleChange('additionalInfo', e.target.value)} rows={4} className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder={T.additionalInfoPlaceholder as string}></textarea>
         </div>
         <div className="mt-6">
           <h3 className="text-lg font-semibold mb-4 text-gray-700">{T.alertSettings as string}</h3>

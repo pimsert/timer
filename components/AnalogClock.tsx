@@ -15,7 +15,7 @@ const AnalogClock: React.FC<AnalogClockProps> = ({ time, size = 400 }) => {
   const secondAngle = seconds * 6;
 
   const handBaseStyle = "absolute left-1/2 bottom-1/2 origin-bottom";
-  const numberBaseStyle = "absolute font-bold";
+  const numberBaseStyle = "absolute font-bold text-red-600";
   
   // The transition is disabled when seconds are 0. This is the moment the wrap-around
   // animation would occur for all hands that cross the 12 o'clock mark.

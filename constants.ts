@@ -1,5 +1,9 @@
 import type { Language } from './types';
 
+export const defaultThaiInfo = 'ห้ามใช้โทรศัพท์หรืออุปกรณ์อิเลคทรอนิกส์ทุกประเภท\nห้ามใช้เครื่องคิดเลขหรือเครื่องคำนวณใดๆ\nห้ามนิสิตคุยกันในระหว่างการสอบ\nห้ามฉีกกระดาษข้อสอบออกจากกัน';
+export const defaultEnglishInfo = "Do not use mobile phones or any electronic devices.\nDo not use calculators or any calculating devices.\nStudents are not allowed to talk during the exam.\nDo not tear exam papers apart.";
+
+
 export const translations: Record<Language, Record<string, string | ((...args: any[]) => string)>> = {
   th: {
     title: "ระบบแสดงข้อมูลห้องสอบ",
@@ -43,6 +47,8 @@ export const translations: Record<Language, Record<string, string | ((...args: a
     validationFillAll: "กรุณากรอกข้อมูล รหัสวิชา, ชื่อวิชา, หมู่เรียน, ห้องสอบ และ เวลาเริ่มสอบ",
     validationZeroDuration: "กรุณาระบุระยะเวลาสอบ",
     validationStartTime: "กรุณาระบุเวลาเริ่มสอบ",
+    reset: "รีเซ็ต",
+    example: "ตัวอย่าง",
   },
   en: {
     title: "Exam Room Information System",
@@ -86,5 +92,7 @@ export const translations: Record<Language, Record<string, string | ((...args: a
     validationFillAll: "Please fill in Course Code, Course Name, Section, Exam Room and Start Time",
     validationZeroDuration: "Please specify exam duration",
     validationStartTime: "Please specify a start time",
+    reset: "Reset",
+    example: "Example",
   }
 };

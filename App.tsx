@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import SettingsPanel from './components/SettingsPanel';
 import FullScreenDisplay from './components/FullScreenDisplay';
 import type { ExamSettings, Language, ExamStatus, TimeRemaining, AlertState } from './types';
-import { translations } from './constants';
+import { translations, defaultThaiInfo, defaultEnglishInfo } from './constants';
 
 const getDefaultStartTime = (): string => {
   const now = new Date();
@@ -10,9 +10,6 @@ const getDefaultStartTime = (): string => {
   nextHour.setHours(now.getHours() + 1, 0, 0, 0);
   return nextHour.toTimeString().slice(0, 5);
 };
-
-const defaultThaiInfo = 'ห้ามใช้โทรศัพท์หรืออุปกรณ์อิเลคทรอนิกส์ทุกประเภท\nห้ามใช้เครื่องคิดเลขหรือเครื่องคำนวณใดๆ\nห้ามนิสิตคุยกันในระหว่างการสอบ\nห้ามฉีกกระดาษข้อสอบออกจากกัน';
-const defaultEnglishInfo = "Do not use mobile phones or any electronic devices.\nDo not use calculators or any calculating devices.\nStudents are not allowed to talk during the exam.\nDo not tear exam papers apart.";
 
 const getInitialSettings = (lang: Language): ExamSettings => ({
   courseCode: '',
