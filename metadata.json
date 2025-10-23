@@ -1,0 +1,5 @@
+{
+  "name": "Exam Room Display System",
+  "description": "A web application to display exam information, timings, and alerts in a full-screen mode for exam rooms. It supports both digital and analog clock displays and is multilingual (Thai/English).",
+  "requestFramePermissions": []
+}
