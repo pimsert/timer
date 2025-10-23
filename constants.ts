@@ -3,6 +3,14 @@ import type { Language } from './types';
 export const defaultThaiInfo = 'ห้ามใช้โทรศัพท์หรืออุปกรณ์อิเลคทรอนิกส์ทุกประเภท\nห้ามใช้เครื่องคิดเลขหรือเครื่องคำนวณใดๆ\nห้ามนิสิตคุยกันในระหว่างการสอบ\nห้ามฉีกกระดาษข้อสอบออกจากกัน';
 export const defaultEnglishInfo = "Do not use mobile phones or any electronic devices.\nDo not use calculators or any calculating devices.\nStudents are not allowed to talk during the exam.\nDo not tear exam papers apart.";
 
+export const colorPalettes = [
+  { name: 'Default Blue', class: 'bg-gradient-to-br from-gray-700 to-gray-900' },
+  { name: 'Deep Green', class: 'bg-gradient-to-br from-teal-700 to-teal-900' },
+  { name: 'Royal Purple', class: 'bg-gradient-to-br from-indigo-700 to-indigo-900' },
+  { name: 'Slate Gray', class: 'bg-gradient-to-br from-slate-700 to-slate-900' },
+  { name: 'Crimson Night', class: 'bg-gradient-to-br from-red-800 to-gray-900' },
+];
+
 
 export const translations: Record<Language, Record<string, string | ((...args: any[]) => string)>> = {
   th: {
@@ -29,6 +37,10 @@ export const translations: Record<Language, Record<string, string | ((...args: a
     clockDisplayType: "รูปแบบการแสดงเวลา",
     digitalClock: "นาฬิกาดิจิตอล (เวลาที่เหลือ)",
     analogClock: "นาฬิกาอนาล็อก (เวลาจริง)",
+    displaySettings: "ตั้งค่าการแสดงผล",
+    displaySettingsButton: "ตั้งค่าการแสดงผล",
+    backgroundColor: "สีพื้นหลัง",
+    disableAlertColors: "ไม่เปลี่ยนสีพื้นหลังเมื่อถึงเวลาแจ้งเตือน",
     showFullScreen: "แสดงแบบเต็มจอ",
     backToSettings: "← กลับไปแก้ไข",
     switchToAnalog: "เปลี่ยนเป็นอนาล็อก",
@@ -74,6 +86,10 @@ export const translations: Record<Language, Record<string, string | ((...args: a
     clockDisplayType: "Clock Display Type",
     digitalClock: "Digital Clock (Time Remaining)",
     analogClock: "Analog Clock (Current Time)",
+    displaySettings: "Display Settings",
+    displaySettingsButton: "Display Settings",
+    backgroundColor: "Background Color",
+    disableAlertColors: "Disable background color change during alerts",
     showFullScreen: "Show Full Screen",
     backToSettings: "← Back to Settings",
     switchToAnalog: "Switch to Analog",

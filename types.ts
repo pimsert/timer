@@ -16,6 +16,8 @@ export interface ExamSettings {
     red: number;
   };
   clockType: 'digital' | 'analog';
+  backgroundColor: string;
+  disableAlertColors: boolean;
 }
 
 export type ExamStatus = 'idle' | 'waiting' | 'running' | 'finished';

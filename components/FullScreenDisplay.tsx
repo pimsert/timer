@@ -1,10 +1,11 @@
 import React, { useState, useMemo } from 'react';
 import type { ExamSettings, ExamStatus, AlertState, TimeRemaining, Language } from '../types';
-import { translations } from '../constants';
+import { translations, colorPalettes } from '../constants';
 import AnalogClock from './AnalogClock';
 
 interface FullScreenDisplayProps {
   settings: ExamSettings;
+  setSettings: (settings: ExamSettings) => void;
   status: ExamStatus;
   alertState: AlertState;
   timeRemaining: TimeRemaining;
@@ -27,6 +28,7 @@ const formatCurrentTime = (date: Date) => {
 
 const FullScreenDisplay: React.FC<FullScreenDisplayProps> = ({
   settings,
+  setSettings,
   status,
   alertState,
   timeRemaining,
@@ -36,16 +38,24 @@ const FullScreenDisplay: React.FC<FullScreenDisplayProps> = ({
   onEndExam,
 }) => {
   const [clockMode, setClockMode] = useState(settings.clockType);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const T = useMemo(() => translations[language], [language]);
 
   const backgroundClass = useMemo(() => {
+    if (settings.disableAlertColors) {
+      return settings.backgroundColor;
+    }
     switch (alertState) {
       case 'red': return 'bg-gradient-to-br from-red-600 to-red-800';
       case 'yellow': return 'bg-gradient-to-br from-yellow-500 to-yellow-700';
       case 'green': return 'bg-gradient-to-br from-teal-600 to-teal-800';
-      default: return 'bg-gradient-to-br from-gray-700 to-gray-900';
+      default: return settings.backgroundColor;
     }
-  }, [alertState]);
+  }, [alertState, settings.backgroundColor, settings.disableAlertColors]);
+  
+  const handleChange = (field: keyof ExamSettings, value: any) => {
+    setSettings({ ...settings, [field]: value });
+  };
 
   const alertMessage = useMemo(() => {
     switch (alertState) {
@@ -83,6 +93,46 @@ const FullScreenDisplay: React.FC<FullScreenDisplayProps> = ({
           {clockMode === 'digital' ? T.switchToAnalog as string : T.switchToDigital as string}
         </button>
       </div>
+      
+      <div className="absolute top-4 left-1/2 -translate-x-1/2 z-50">
+        <button onClick={() => setIsSettingsOpen(true)} className="bg-black bg-opacity-50 hover:bg-opacity-70 text-white font-bold py-3 px-6 rounded-lg transition-all shadow-lg">
+          {T.displaySettingsButton as string}
+        </button>
+      </div>
+      
+      {isSettingsOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-[100]" onClick={() => setIsSettingsOpen(false)}>
+            <div className="bg-white text-gray-800 rounded-lg shadow-2xl p-6 w-full max-w-sm relative" onClick={(e) => e.stopPropagation()}>
+                <button onClick={() => setIsSettingsOpen(false)} className="absolute top-3 right-3 text-gray-400 hover:text-gray-800 text-3xl leading-none font-semibold">&times;</button>
+                <h3 className="text-xl font-semibold mb-6">{T.displaySettings as string}</h3>
+                <div className="mb-6">
+                    <label className="block text-sm font-medium text-gray-700 mb-3">{T.backgroundColor as string}</label>
+                    <div className="flex flex-wrap gap-4">
+                        {colorPalettes.map((palette) => (
+                            <button
+                                key={palette.class}
+                                onClick={() => handleChange('backgroundColor', palette.class)}
+                                className={`w-10 h-10 rounded-full cursor-pointer transition-transform transform hover:scale-110 ${palette.class} ${settings.backgroundColor === palette.class ? 'ring-4 ring-offset-2 ring-blue-500' : 'ring-2 ring-gray-300'}`}
+                                title={palette.name}
+                                aria-label={palette.name}
+                            />
+                        ))}
+                    </div>
+                </div>
+                <div>
+                    <label className="flex items-center cursor-pointer">
+                        <input
+                            type="checkbox"
+                            checked={settings.disableAlertColors}
+                            onChange={(e) => handleChange('disableAlertColors', e.target.checked)}
+                            className="mr-3 h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                        />
+                        <span className="text-gray-700">{T.disableAlertColors as string}</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+      )}
 
       {alertMessage && status === 'running' && (
         <div className="absolute top-4 right-4 z-50">

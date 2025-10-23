@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import SettingsPanel from './components/SettingsPanel';
 import FullScreenDisplay from './components/FullScreenDisplay';
 import type { ExamSettings, Language, ExamStatus, TimeRemaining, AlertState } from './types';
-import { translations, defaultThaiInfo, defaultEnglishInfo } from './constants';
+import { translations, defaultThaiInfo, defaultEnglishInfo, colorPalettes } from './constants';
 
 const getDefaultStartTime = (): string => {
   const now = new Date();
@@ -26,6 +26,8 @@ const getInitialSettings = (lang: Language): ExamSettings => ({
     red: 5,
   },
   clockType: 'digital',
+  backgroundColor: colorPalettes[0].class,
+  disableAlertColors: false,
 });
 
 
@@ -175,6 +177,7 @@ const App: React.FC = () => {
       ) : (
         <FullScreenDisplay
           settings={settings}
+          setSettings={setSettings}
           status={examStatus}
           alertState={alertState}
           timeRemaining={timeRemaining}
