@@ -25,7 +25,7 @@ const getInitialSettings = (lang: Language): ExamSettings => ({
     yellow: 15,
     red: 5,
   },
-  clockType: 'digital',
+  clockType: 'analog',
   backgroundColor: colorPalettes[0].class,
   disableAlertColors: false,
 });

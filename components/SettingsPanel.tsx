@@ -130,12 +130,12 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ settings, onSettingsChang
           <h3 className="text-lg font-semibold mb-4 text-gray-700">{T.clockDisplayType as string}</h3>
           <div className="flex gap-4">
             <label className="flex items-center">
-              <input type="radio" name="clockType" value="digital" checked={settings.clockType === 'digital'} onChange={() => handleChange('clockType', 'digital')} className="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300" />
-              <span>{T.digitalClock as string}</span>
-            </label>
-            <label className="flex items-center">
               <input type="radio" name="clockType" value="analog" checked={settings.clockType === 'analog'} onChange={() => handleChange('clockType', 'analog')} className="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300" />
               <span>{T.analogClock as string}</span>
+            </label>
+            <label className="flex items-center">
+              <input type="radio" name="clockType" value="digital" checked={settings.clockType === 'digital'} onChange={() => handleChange('clockType', 'digital')} className="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300" />
+              <span>{T.digitalClock as string}</span>
             </label>
           </div>
         </div>
