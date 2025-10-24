@@ -47,7 +47,7 @@ const FullScreenDisplay: React.FC<FullScreenDisplayProps> = ({
     }
     switch (alertState) {
       case 'red': return 'bg-gradient-to-br from-red-600 to-red-800';
-      case 'yellow': return 'bg-gradient-to-br from-yellow-500 to-yellow-700';
+      case 'yellow': return 'bg-gradient-to-br from-yellow-600 to-yellow-800';
       case 'green': return 'bg-gradient-to-br from-teal-600 to-teal-800';
       default: return settings.backgroundColor;
     }
