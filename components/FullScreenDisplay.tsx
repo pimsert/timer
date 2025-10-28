@@ -94,7 +94,7 @@ const FullScreenDisplay: React.FC<FullScreenDisplayProps> = ({
         </button>
       </div>
       
-      <div className="absolute top-4 left-1/2 -translate-x-1/2 z-50">
+      <div className="absolute top-4 right-4 z-50">
         <button onClick={() => setIsSettingsOpen(true)} className="bg-black bg-opacity-50 hover:bg-opacity-70 text-white font-bold py-3 px-6 rounded-lg transition-all shadow-lg">
           {T.displaySettingsButton as string}
         </button>
@@ -135,7 +135,7 @@ const FullScreenDisplay: React.FC<FullScreenDisplayProps> = ({
       )}
 
       {alertMessage && status === 'running' && (
-        <div className="absolute top-4 right-4 z-50">
+        <div className="absolute top-4 right-4 z-50 hidden md:block">
           <div className="text-center text-2xl font-semibold p-4 rounded-lg bg-white bg-opacity-20 backdrop-blur-sm drop-shadow-lg animate-pulse max-w-xl">
             {alertMessage}
           </div>
@@ -168,10 +168,14 @@ const FullScreenDisplay: React.FC<FullScreenDisplayProps> = ({
                            <span>{T.courseName as string}</span> <span className="font-semibold">{settings.courseName}</span>
                         </div>
                     )}
-                    {(settings.courseSection || settings.examRoom) && (
+                    {settings.courseSection && (
                         <div className="text-white drop-shadow-lg">
-                            {settings.courseSection && <><span>{T.section as string}</span> <span className="font-semibold">{settings.courseSection}</span></>}
-                            {settings.examRoom && <><span className={settings.courseSection ? "ml-4" : ""}>{T.examRoom as string}</span> <span className="font-semibold">{settings.examRoom}</span></>}
+                            <span>{T.section as string}</span> <span className="font-semibold">{settings.courseSection}</span>
+                        </div>
+                    )}
+                    {settings.examRoom && (
+                        <div className="text-white drop-shadow-lg">
+                            <span>{T.examRoom as string}</span> <span className="font-semibold">{settings.examRoom}</span>
                         </div>
                     )}
                     <div className="text-white drop-shadow-lg font-semibold text-4xl md:text-5xl">
@@ -202,10 +206,14 @@ const FullScreenDisplay: React.FC<FullScreenDisplayProps> = ({
                            <span>{T.courseName as string}</span> <span className="font-semibold">{settings.courseName}</span>
                         </div>
                     )}
-                    {(settings.courseSection || settings.examRoom) && (
+                    {settings.courseSection && (
                         <div className="text-white drop-shadow-lg">
-                            {settings.courseSection && <><span>{T.section as string}</span> <span className="font-semibold">{settings.courseSection}</span></>}
-                            {settings.examRoom && <><span className={settings.courseSection ? "ml-4" : ""}>{T.examRoom as string}</span> <span className="font-semibold">{settings.examRoom}</span></>}
+                            <span>{T.section as string}</span> <span className="font-semibold">{settings.courseSection}</span>
+                        </div>
+                    )}
+                    {settings.examRoom && (
+                        <div className="text-white drop-shadow-lg">
+                           <span>{T.examRoom as string}</span> <span className="font-semibold">{settings.examRoom}</span>
                         </div>
                     )}
                     <div className="text-white drop-shadow-lg font-semibold text-4xl md:text-5xl">
