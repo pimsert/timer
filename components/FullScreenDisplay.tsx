@@ -146,18 +146,33 @@ const FullScreenDisplay: React.FC<FullScreenDisplayProps> = ({
         {/* Digital Clock View */}
         {clockMode === 'digital' && (
           <div className="w-full text-center flex flex-col justify-center items-center flex-grow">
-            <div className="mb-8 md:mb-16">
+            <div className="mb-8 md:mb-12">
               {/* FIX: Cast translation values to string to satisfy ReactNode type, as they are known to be strings. */}
               <p className="text-4xl md:text-5xl text-white mb-4 drop-shadow-lg">{(status === 'waiting' ? T.timeBeforeExam : T.timeRemaining) as string}</p>
-              <div className="font-bold text-white drop-shadow-lg digital-font text-7xl sm:text-8xl md:text-9xl lg:text-[12rem] mt-12">{formatTime(timeRemaining)}</div>
+              <div className="font-bold text-white drop-shadow-lg digital-font text-6xl sm:text-7xl md:text-8xl mt-6">{formatTime(timeRemaining)}</div>
             </div>
-             <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-8 px-8 md:px-16">
+             <div className="w-full grid grid-cols-1 lg:grid-cols-3 gap-8 items-center px-6 md:px-12 max-w-7xl mx-auto">
                 <div className="text-left">
                     {settings.additionalInfo && (
-                        <div className={`text-yellow-200 drop-shadow-lg p-4 bg-black bg-opacity-30 rounded-lg text-3xl`} dangerouslySetInnerHTML={{ __html: settings.additionalInfo.replace(/\n/g, '<br />') }} />
+                        <div className={`text-yellow-200 drop-shadow-lg p-4 bg-black bg-opacity-30 rounded-lg text-2xl`} dangerouslySetInnerHTML={{ __html: settings.additionalInfo.replace(/\n/g, '<br />') }} />
                     )}
                 </div>
-                <div className="text-left space-y-4 md:space-y-6 text-3xl md:text-4xl">
+                <div className="flex justify-center items-center">
+                    {settings.qrCodeUrl && (
+                      <div className="flex flex-col items-center justify-center bg-white bg-opacity-95 p-5 rounded-2xl shadow-2xl text-gray-800 text-center max-w-xs">
+                        <p className="text-sm md:text-base font-bold mb-2 text-blue-900 leading-snug">{T.scanQrCode as string}</p>
+                        <img 
+                          src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(settings.qrCodeUrl)}`} 
+                          alt="QR Code" 
+                          className="w-40 h-40 md:w-48 md:h-48 object-contain rounded-lg border-2 border-gray-200"
+                        />
+                        <div className="mt-3 text-xs md:text-sm font-semibold text-red-600 bg-red-50 p-2 rounded-md border border-red-200 leading-snug">
+                          {T.scanInstruction as string}
+                        </div>
+                      </div>
+                    )}
+                </div>
+                <div className="text-left space-y-3 md:space-y-4 text-2xl md:text-3xl">
                     {settings.courseCode && (
                         <div className="text-white drop-shadow-lg">
                             <span>{T.courseCode as string}</span> <span className="font-semibold">{settings.courseCode}</span>
@@ -178,7 +193,7 @@ const FullScreenDisplay: React.FC<FullScreenDisplayProps> = ({
                             <span>{T.examRoom as string}</span> <span className="font-semibold">{settings.examRoom}</span>
                         </div>
                     )}
-                    <div className="text-white drop-shadow-lg font-semibold text-4xl md:text-5xl">
+                    <div className="text-white drop-shadow-lg font-semibold text-2xl md:text-3xl">
                         <span>{T.examTime as string}</span> <span>{examPeriod}</span> <span className="ml-2">{T.unit as string}</span>
                     </div>
                 </div>
@@ -189,13 +204,13 @@ const FullScreenDisplay: React.FC<FullScreenDisplayProps> = ({
         {/* Analog Clock View */}
         {clockMode === 'analog' && (
           <div className="w-full h-full flex items-center justify-center">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-start w-full px-8 md:px-16 mx-auto">
-              <div className="text-center lg:text-left">
-                <div className="mb-8">
-                    <p className="text-3xl md:text-4xl text-white mb-2 drop-shadow-lg">{(status === 'waiting' ? T.timeBeforeExam : T.timeRemaining) as string}</p>
-                    <div className="font-bold text-white drop-shadow-lg digital-font text-6xl md:text-8xl mt-4">{formatTime(timeRemaining)}</div>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 items-center w-full px-6 md:px-12 max-w-7xl mx-auto">
+              <div className="text-center lg:text-left space-y-4">
+                <div className="mb-4">
+                    <p className="text-2xl md:text-3xl text-white mb-2 drop-shadow-lg">{(status === 'waiting' ? T.timeBeforeExam : T.timeRemaining) as string}</p>
+                    <div className="font-bold text-white drop-shadow-lg digital-font text-5xl md:text-7xl mt-2">{formatTime(timeRemaining)}</div>
                 </div>
-                <div className="space-y-4 md:space-y-6 text-2xl md:text-3xl lg:text-4xl">
+                <div className="space-y-2 md:space-y-3 text-xl md:text-2xl lg:text-3xl">
                     {settings.courseCode && (
                         <div className="text-white drop-shadow-lg">
                             <span>{T.courseCode as string}</span> <span className="font-semibold">{settings.courseCode}</span>
@@ -216,21 +231,39 @@ const FullScreenDisplay: React.FC<FullScreenDisplayProps> = ({
                            <span>{T.examRoom as string}</span> <span className="font-semibold">{settings.examRoom}</span>
                         </div>
                     )}
-                    <div className="text-white drop-shadow-lg font-semibold text-4xl md:text-5xl">
+                    <div className="text-white drop-shadow-lg font-semibold text-2xl md:text-3xl">
                         <span>{T.examTime as string}</span> <span>{examPeriod}</span> <span className="ml-2">{T.unit as string}</span>
                     </div>
                 </div>
-                <div className="w-full mt-8">
+                <div className="w-full mt-4">
                     {settings.additionalInfo && (
-                        <div className={`text-yellow-200 drop-shadow-lg p-4 bg-black bg-opacity-30 rounded-lg text-2xl`} dangerouslySetInnerHTML={{ __html: settings.additionalInfo.replace(/\n/g, '<br />') }} />
+                        <div className={`text-yellow-200 drop-shadow-lg p-3 bg-black bg-opacity-30 rounded-lg text-lg`} dangerouslySetInnerHTML={{ __html: settings.additionalInfo.replace(/\n/g, '<br />') }} />
                     )}
                 </div>
               </div>
-              <div className="flex flex-col justify-start items-center scale-75 md:scale-90 lg:scale-100 space-y-8">
-                <AnalogClock time={currentTime} size={400}/>
-                <div className="mt-8 text-center">
-                  <p className="text-3xl text-white mb-2 drop-shadow-lg">{T.currentTime as string}</p>
-                  <div className="text-5xl font-bold text-white drop-shadow-lg digital-font">{formatCurrentTime(currentTime)}</div>
+
+              {/* QR Code Card in the Red Circled Area */}
+              <div className="flex justify-center items-center">
+                {settings.qrCodeUrl && (
+                  <div className="flex flex-col items-center justify-center bg-white bg-opacity-95 p-6 rounded-2xl shadow-2xl text-gray-800 text-center max-w-sm">
+                    <p className="text-base md:text-lg font-bold mb-3 text-blue-900 leading-snug">{T.scanQrCode as string}</p>
+                    <img 
+                      src={`https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(settings.qrCodeUrl)}`} 
+                      alt="QR Code" 
+                      className="w-48 h-48 md:w-56 md:h-56 object-contain rounded-lg border-2 border-gray-200 shadow-inner"
+                    />
+                    <div className="mt-3 text-sm font-semibold text-red-600 bg-red-50 p-2.5 rounded-md border border-red-200 leading-snug">
+                      {T.scanInstruction as string}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div className="flex flex-col justify-center items-center scale-90 md:scale-100 space-y-6">
+                <AnalogClock time={currentTime} size={360}/>
+                <div className="text-center">
+                  <p className="text-2xl md:text-3xl text-white mb-2 drop-shadow-lg">{T.currentTime as string}</p>
+                  <div className="text-4xl md:text-5xl font-bold text-white drop-shadow-lg digital-font">{formatCurrentTime(currentTime)}</div>
                 </div>
               </div>
             </div>

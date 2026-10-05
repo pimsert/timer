@@ -110,6 +110,10 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ settings, onSettingsChang
             <textarea value={settings.additionalInfo} onChange={(e) => handleChange('additionalInfo', e.target.value)} rows={4} className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder={T.additionalInfoPlaceholder as string}></textarea>
         </div>
         <div className="mt-6">
+            <label className="block text-sm font-medium text-gray-700 mb-2">{T.qrCodeUrl as string}</label>
+            <input type="text" value={settings.qrCodeUrl} onChange={(e) => handleChange('qrCodeUrl', e.target.value)} className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder={T.qrCodeUrlPlaceholder as string} />
+        </div>
+        <div className="mt-6">
           <h3 className="text-lg font-semibold mb-4 text-gray-700">{T.alertSettings as string}</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
