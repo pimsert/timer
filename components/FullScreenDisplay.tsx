@@ -135,8 +135,8 @@ const FullScreenDisplay: React.FC<FullScreenDisplayProps> = ({
       )}
 
       {alertMessage && status === 'running' && (
-        <div className="absolute top-4 right-4 z-50 hidden md:block">
-          <div className="text-center text-2xl font-semibold p-4 rounded-lg bg-white bg-opacity-20 backdrop-blur-sm drop-shadow-lg animate-pulse max-w-xl">
+        <div className="absolute top-4 left-1/2 -translate-x-1/2 z-40 hidden md:block w-full max-w-xl px-4">
+          <div className="text-center text-2xl font-semibold p-4 rounded-xl bg-black bg-opacity-40 backdrop-blur-md border border-white border-opacity-30 shadow-2xl animate-pulse text-white">
             {alertMessage}
           </div>
         </div>
