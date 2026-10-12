@@ -74,11 +74,62 @@ const FullScreenDisplay: React.FC<FullScreenDisplayProps> = ({
   
   if (status === 'finished') {
     return (
-      <div className="fixed inset-0 bg-red-900 flex flex-col justify-center items-center text-center p-4">
-        <div className="font-bold text-red-200 p-8 rounded-lg drop-shadow-lg animate-pulse text-4xl sm:text-5xl md:text-7xl mb-12" dangerouslySetInnerHTML={{ __html: T.timesUpTitle as string }} />
-        <button onClick={onEndExam} className="bg-red-600 hover:bg-red-700 text-white font-bold py-4 px-8 rounded-lg text-2xl transition-colors shadow-lg">
-          {T.endExamTimer as string}
-        </button>
+      <div className="fixed inset-0 z-50 bg-gradient-to-b from-red-900 via-red-950 to-black text-white flex flex-col justify-between items-center p-6 md:p-8 overflow-y-auto">
+        {/* Top Control Bar */}
+        <div className="w-full flex justify-between items-center z-10 max-w-7xl mx-auto">
+          <button 
+            onClick={onHideFullScreen} 
+            className="bg-black bg-opacity-60 hover:bg-opacity-80 text-white font-medium py-2 px-5 rounded-lg transition-all shadow-md text-base"
+          >
+            {T.backToSettings as string}
+          </button>
+          <button 
+            onClick={onEndExam} 
+            className="bg-red-700 hover:bg-red-600 text-white font-semibold py-2 px-6 rounded-lg transition-all shadow-lg text-base"
+          >
+            {T.endExamTimer as string}
+          </button>
+        </div>
+
+        {/* Main Content Area */}
+        <div className="flex flex-col items-center justify-center my-auto w-full max-w-4xl text-center py-4">
+          {/* Header Title */}
+          <div 
+            className="font-extrabold text-red-100 drop-shadow-2xl animate-pulse text-3xl sm:text-5xl md:text-6xl mb-6 tracking-wide leading-tight" 
+            dangerouslySetInnerHTML={{ __html: T.timesUpTitle as string }} 
+          />
+
+          {/* QR Code Big & Prominent Card */}
+          {settings.qrCodeUrl && (
+            <div className="bg-white text-gray-900 rounded-3xl p-6 sm:p-8 md:p-10 shadow-2xl border-4 border-red-500/50 flex flex-col items-center max-w-xl w-full">
+              <p className="text-xl sm:text-2xl font-bold text-blue-900 mb-4 leading-snug">
+                {T.scanQrCode as string}
+              </p>
+
+              <div className="p-3 bg-white rounded-2xl shadow-inner border-2 border-gray-100 flex items-center justify-center">
+                <img 
+                  src={`https://api.qrserver.com/v1/create-qr-code/?size=350x350&data=${encodeURIComponent(settings.qrCodeUrl)}`} 
+                  alt="QR Code" 
+                  className="w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 object-contain rounded-lg"
+                />
+              </div>
+
+              <div className="mt-5 w-full bg-red-50 border-2 border-red-300 rounded-xl p-3 sm:p-4 text-red-700 font-bold text-base sm:text-lg md:text-xl shadow-sm">
+                {T.scanInstruction as string}
+              </div>
+
+              <span className="mt-3 text-sm sm:text-base text-gray-500 truncate max-w-xs sm:max-w-md block">
+                {settings.qrCodeUrl}
+              </span>
+            </div>
+          )}
+        </div>
+
+        {/* Bottom Info Footer */}
+        <div className="py-2 text-center text-red-200/70 text-sm">
+          {settings.courseCode && <span className="mr-3 font-semibold">{settings.courseCode}</span>}
+          {settings.courseName && <span>{settings.courseName}</span>}
+        </div>
       </div>
     );
   }
