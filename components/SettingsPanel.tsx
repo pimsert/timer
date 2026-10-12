@@ -109,9 +109,43 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ settings, onSettingsChang
             </div>
             <textarea value={settings.additionalInfo} onChange={(e) => handleChange('additionalInfo', e.target.value)} rows={4} className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder={T.additionalInfoPlaceholder as string}></textarea>
         </div>
-        <div className="mt-6">
-            <label className="block text-sm font-medium text-gray-700 mb-2">{T.qrCodeUrl as string}</label>
-            <input type="text" value={settings.qrCodeUrl} onChange={(e) => handleChange('qrCodeUrl', e.target.value)} className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder={T.qrCodeUrlPlaceholder as string} />
+        <div className="mt-6 p-4 rounded-xl border border-gray-200 bg-gray-50/80">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
+              <label className="flex items-center cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  checked={settings.showQrCode}
+                  onChange={(e) => handleChange('showQrCode', e.target.checked)}
+                  className="mr-3 h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded cursor-pointer"
+                />
+                <span className="text-base font-semibold text-gray-800">{T.showQrCode as string}</span>
+              </label>
+
+              <button
+                type="button"
+                onClick={() => handleChange('showQrCode', !settings.showQrCode)}
+                className={`text-xs px-3 py-1.5 rounded-full font-semibold transition-colors flex items-center gap-1.5 self-start sm:self-auto ${
+                  settings.showQrCode
+                    ? 'bg-blue-600 text-white hover:bg-blue-700'
+                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                }`}
+              >
+                <span>{settings.showQrCode ? '✓ เปิดแสดง QR Code' : '✕ ซ่อน QR Code'}</span>
+              </button>
+            </div>
+
+            {settings.showQrCode && (
+              <div className="mt-3 pt-3 border-t border-gray-200">
+                <label className="block text-sm font-medium text-gray-700 mb-2">{T.qrCodeUrl as string}</label>
+                <input 
+                  type="text" 
+                  value={settings.qrCodeUrl} 
+                  onChange={(e) => handleChange('qrCodeUrl', e.target.value)} 
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-800" 
+                  placeholder={T.qrCodeUrlPlaceholder as string} 
+                />
+              </div>
+            )}
         </div>
         <div className="mt-6">
           <h3 className="text-lg font-semibold mb-4 text-gray-700">{T.alertSettings as string}</h3>

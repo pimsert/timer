@@ -71,18 +71,32 @@ const FullScreenDisplay: React.FC<FullScreenDisplayProps> = ({
   };
 
   const examPeriod = `${settings.startTime} - ${new Date(new Date(`1970-01-01T${settings.startTime}:00`).getTime() + (settings.durationHours * 60 + settings.durationMinutes) * 60000).toTimeString().slice(0, 5)}`;
+  const isQrVisible = settings.showQrCode && Boolean(settings.qrCodeUrl);
   
   if (status === 'finished') {
     return (
       <div className="fixed inset-0 z-50 bg-gradient-to-b from-red-900 via-red-950 to-black text-white flex flex-col justify-between items-center p-6 md:p-8 overflow-y-auto">
         {/* Top Control Bar */}
-        <div className="w-full flex justify-between items-center z-10 max-w-7xl mx-auto">
-          <button 
-            onClick={onHideFullScreen} 
-            className="bg-black bg-opacity-60 hover:bg-opacity-80 text-white font-medium py-2 px-5 rounded-lg transition-all shadow-md text-base"
-          >
-            {T.backToSettings as string}
-          </button>
+        <div className="w-full flex justify-between items-center z-10 max-w-7xl mx-auto gap-4">
+          <div className="flex gap-3">
+            <button 
+              onClick={onHideFullScreen} 
+              className="bg-black bg-opacity-60 hover:bg-opacity-80 text-white font-medium py-2 px-5 rounded-lg transition-all shadow-md text-base"
+            >
+              {T.backToSettings as string}
+            </button>
+            <button
+              onClick={() => handleChange('showQrCode', !settings.showQrCode)}
+              className={`font-semibold py-2 px-5 rounded-lg transition-all shadow-md text-base flex items-center gap-2 ${
+                settings.showQrCode 
+                  ? 'bg-purple-700 hover:bg-purple-600 text-white' 
+                  : 'bg-gray-800 hover:bg-gray-700 text-gray-300'
+              }`}
+              title={settings.showQrCode ? (T.hideQrCode as string) : (T.showQrCode as string)}
+            >
+              <span>{settings.showQrCode ? '📱 QR Code: ON' : '📱 QR Code: OFF'}</span>
+            </button>
+          </div>
           <button 
             onClick={onEndExam} 
             className="bg-red-700 hover:bg-red-600 text-white font-semibold py-2 px-6 rounded-lg transition-all shadow-lg text-base"
@@ -100,7 +114,7 @@ const FullScreenDisplay: React.FC<FullScreenDisplayProps> = ({
           />
 
           {/* QR Code Big & Prominent Card */}
-          {settings.qrCodeUrl && (
+          {isQrVisible && (
             <div className="bg-white text-gray-900 rounded-3xl p-6 sm:p-8 md:p-10 shadow-2xl border-4 border-red-500/50 flex flex-col items-center max-w-xl w-full">
               <p className="text-xl sm:text-2xl font-bold text-blue-900 mb-4 leading-snug">
                 {T.scanQrCode as string}
@@ -136,12 +150,23 @@ const FullScreenDisplay: React.FC<FullScreenDisplayProps> = ({
 
   return (
     <div className={`fixed inset-0 z-50 text-white transition-colors duration-500 ${backgroundClass}`}>
-      <div className="absolute top-4 left-4 z-50 flex gap-4">
+      <div className="absolute top-4 left-4 z-50 flex flex-wrap gap-3">
         <button onClick={onHideFullScreen} className="bg-black bg-opacity-70 hover:bg-opacity-90 text-white font-bold py-3 px-6 rounded-lg transition-all shadow-lg">
           {T.backToSettings as string}
         </button>
         <button onClick={toggleClockMode} className="bg-blue-600 bg-opacity-80 hover:bg-blue-700 hover:bg-opacity-90 text-white font-bold py-3 px-6 rounded-lg transition-all shadow-lg">
           {clockMode === 'digital' ? T.switchToAnalog as string : T.switchToDigital as string}
+        </button>
+        <button
+          onClick={() => handleChange('showQrCode', !settings.showQrCode)}
+          className={`font-bold py-3 px-5 rounded-lg transition-all shadow-lg flex items-center gap-2 ${
+            settings.showQrCode 
+              ? 'bg-purple-600 bg-opacity-85 hover:bg-purple-700 hover:bg-opacity-95 text-white' 
+              : 'bg-gray-700 bg-opacity-85 hover:bg-gray-600 hover:bg-opacity-95 text-gray-200'
+          }`}
+          title={settings.showQrCode ? (T.hideQrCode as string) : (T.showQrCode as string)}
+        >
+          <span>{settings.showQrCode ? '📱 QR Code: ON' : '📱 QR Code: OFF'}</span>
         </button>
       </div>
       
@@ -170,7 +195,7 @@ const FullScreenDisplay: React.FC<FullScreenDisplayProps> = ({
                         ))}
                     </div>
                 </div>
-                <div>
+                <div className="space-y-4 pt-2 border-t border-gray-100">
                     <label className="flex items-center cursor-pointer">
                         <input
                             type="checkbox"
@@ -179,6 +204,16 @@ const FullScreenDisplay: React.FC<FullScreenDisplayProps> = ({
                             className="mr-3 h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                         />
                         <span className="text-gray-700">{T.disableAlertColors as string}</span>
+                    </label>
+
+                    <label className="flex items-center cursor-pointer">
+                        <input
+                            type="checkbox"
+                            checked={settings.showQrCode}
+                            onChange={(e) => handleChange('showQrCode', e.target.checked)}
+                            className="mr-3 h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                        />
+                        <span className="text-gray-700 font-medium">{T.showQrCode as string}</span>
                     </label>
                 </div>
             </div>
@@ -202,27 +237,27 @@ const FullScreenDisplay: React.FC<FullScreenDisplayProps> = ({
               <p className="text-4xl md:text-5xl text-white mb-4 drop-shadow-lg">{(status === 'waiting' ? T.timeBeforeExam : T.timeRemaining) as string}</p>
               <div className="font-bold text-white drop-shadow-lg digital-font text-6xl sm:text-7xl md:text-8xl mt-6">{formatTime(timeRemaining)}</div>
             </div>
-             <div className="w-full grid grid-cols-1 lg:grid-cols-3 gap-8 items-center px-6 md:px-12 max-w-7xl mx-auto">
+             <div className={`w-full grid grid-cols-1 ${isQrVisible ? 'lg:grid-cols-3' : 'lg:grid-cols-2'} gap-8 items-center px-6 md:px-12 max-w-7xl mx-auto`}>
                 <div className="text-left">
                     {settings.additionalInfo && (
                         <div className={`text-yellow-200 drop-shadow-lg p-4 bg-black bg-opacity-30 rounded-lg text-2xl`} dangerouslySetInnerHTML={{ __html: settings.additionalInfo.replace(/\n/g, '<br />') }} />
                     )}
                 </div>
-                <div className="flex justify-center items-center">
-                    {settings.qrCodeUrl && (
-                      <div className="flex flex-col items-center justify-center bg-white bg-opacity-95 p-5 rounded-2xl shadow-2xl text-gray-800 text-center max-w-xs">
-                        <p className="text-sm md:text-base font-bold mb-2 text-blue-900 leading-snug">{T.scanQrCode as string}</p>
-                        <img 
-                          src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(settings.qrCodeUrl)}`} 
-                          alt="QR Code" 
-                          className="w-40 h-40 md:w-48 md:h-48 object-contain rounded-lg border-2 border-gray-200"
-                        />
-                        <div className="mt-3 text-xs md:text-sm font-semibold text-red-600 bg-red-50 p-2 rounded-md border border-red-200 leading-snug">
-                          {T.scanInstruction as string}
-                        </div>
+                {isQrVisible && (
+                  <div className="flex justify-center items-center">
+                    <div className="flex flex-col items-center justify-center bg-white bg-opacity-95 p-5 rounded-2xl shadow-2xl text-gray-800 text-center max-w-xs">
+                      <p className="text-sm md:text-base font-bold mb-2 text-blue-900 leading-snug">{T.scanQrCode as string}</p>
+                      <img 
+                        src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(settings.qrCodeUrl)}`} 
+                        alt="QR Code" 
+                        className="w-40 h-40 md:w-48 md:h-48 object-contain rounded-lg border-2 border-gray-200"
+                      />
+                      <div className="mt-3 text-xs md:text-sm font-semibold text-red-600 bg-red-50 p-2 rounded-md border border-red-200 leading-snug">
+                        {T.scanInstruction as string}
                       </div>
-                    )}
-                </div>
+                    </div>
+                  </div>
+                )}
                 <div className="text-left space-y-3 md:space-y-4 text-2xl md:text-3xl">
                     {settings.courseCode && (
                         <div className="text-white drop-shadow-lg">
@@ -255,7 +290,7 @@ const FullScreenDisplay: React.FC<FullScreenDisplayProps> = ({
         {/* Analog Clock View */}
         {clockMode === 'analog' && (
           <div className="w-full h-full flex items-center justify-center">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 items-center w-full px-6 md:px-12 max-w-7xl mx-auto">
+            <div className={`grid grid-cols-1 ${isQrVisible ? 'lg:grid-cols-3' : 'lg:grid-cols-2'} gap-8 lg:gap-12 items-center w-full px-6 md:px-12 max-w-7xl mx-auto`}>
               <div className="text-center lg:text-left space-y-4">
                 <div className="mb-4">
                     <p className="text-2xl md:text-3xl text-white mb-2 drop-shadow-lg">{(status === 'waiting' ? T.timeBeforeExam : T.timeRemaining) as string}</p>
@@ -293,9 +328,9 @@ const FullScreenDisplay: React.FC<FullScreenDisplayProps> = ({
                 </div>
               </div>
 
-              {/* QR Code Card in the Red Circled Area */}
-              <div className="flex justify-center items-center">
-                {settings.qrCodeUrl && (
+              {/* QR Code Card in the Red Circled Area (Only when isQrVisible is true) */}
+              {isQrVisible && (
+                <div className="flex justify-center items-center">
                   <div className="flex flex-col items-center justify-center bg-white bg-opacity-95 p-6 rounded-2xl shadow-2xl text-gray-800 text-center max-w-sm">
                     <p className="text-base md:text-lg font-bold mb-3 text-blue-900 leading-snug">{T.scanQrCode as string}</p>
                     <img 
@@ -307,8 +342,8 @@ const FullScreenDisplay: React.FC<FullScreenDisplayProps> = ({
                       {T.scanInstruction as string}
                     </div>
                   </div>
-                )}
-              </div>
+                </div>
+              )}
 
               <div className="flex flex-col justify-center items-center scale-90 md:scale-100 space-y-6">
                 <AnalogClock time={currentTime} size={360}/>

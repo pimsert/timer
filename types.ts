@@ -11,6 +11,7 @@ export interface ExamSettings {
   durationMinutes: number;
   additionalInfo: string;
   qrCodeUrl: string;
+  showQrCode: boolean;
   alerts: {
     green: number;
     yellow: number;

@@ -21,6 +21,7 @@ const getInitialSettings = (lang: Language): ExamSettings => ({
   durationMinutes: 0,
   additionalInfo: lang === 'th' ? defaultThaiInfo : defaultEnglishInfo,
   qrCodeUrl: 'https://kasets.art/VuQXUD',
+  showQrCode: true,
   alerts: {
     green: 60,
     yellow: 15,
